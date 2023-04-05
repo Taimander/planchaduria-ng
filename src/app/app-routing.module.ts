@@ -4,6 +4,7 @@ import { PurchaseRegistrationComponent } from './components/purchase-registratio
 import { MainInterfaceComponent } from './interface/main-interface/main-interface.component';
 
 const routes: Routes = [
+  {path: '', redirectTo: 'purchase-registration', pathMatch: 'full'},
   {path: '', component: MainInterfaceComponent, children:[
     {path:'purchase-registration', component:PurchaseRegistrationComponent}
   ]},

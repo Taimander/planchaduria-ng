@@ -1,35 +1,131 @@
 <div class="container-fluid mt-3">
-    <div class="row mt-2">
-        <div class="col">
-            <div class="ms-3 display-5">
-                Servicios
-            </div>
-            <div class="container">
-                <div class="row row-cols-sm-4">
-                     <div class="mt-3 col" *ngFor="let x of k">
-                        <div class="card">
-                            <div class="card-body">
-                                <i class="fa fa-shopping-basket me-2" aria-hidden="true"></i>
-                                Nombre del producto
+    <div *ngIf="step==0">
+        <div class="row mt-2">
+            <div class="col">
+                <div class="ms-3 display-6">
+                    <div style="text-align:center">
+                        Servicios
+                    </div>
+                    
+                </div>
+                <div class="container">
+                    <div class="row row-cols-sm-4">
+                         <div class="mt-3 col" *ngFor="let product of products">
+                            <div class="card product">
+                                <div class="card-body">
+                                    <i class="fa fa-shopping-basket me-2" aria-hidden="true"></i>
+                                    {{ product.product.name}} - ${{ product.product.price }}.00
+                                    <div class="mt-2" style="text-align:end;">
+                                        <button (click)="clickMinus(product);" class="btn btn-primary me-2"><i class="fa fa-minus" aria-hidden="true"></i>
+                                        </button>
+                                        {{ product.quantity }}
+                                        <button (click)="clickPlus(product);" class="btn btn-primary ms-2"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                    </div>
+                                    
+                                </div>
                             </div>
+                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h6>Lista de pedidos:</h6>
+                        <div *ngFor="let prod of products">
+                            <span *ngIf="prod.quantity>0">
+                                {{ prod.product.name }} - ${{ prod.product.price }}.00 x {{ prod.quantity }} = ${{ prod.product.price * prod.quantity }}.00
+                            </span>
                         </div>
-                     </div>
+                        <hr>
+                        <div style="text-align: right;">
+                            <span style="vertical-align: top; font-size:larger;" class="me-2">
+                                Total:
+                            </span>
+                            <span class="display-6" >
+                                ${{total}}.00
+                            </span><br>
+                            <button (click)="step=1;" [ngClass]="{'disabled':total<= 0}" class="mt-2 btn btn-primary"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-3">
-            <div class="card">
-                <div class="card-body">
-                    <h6>Productos</h6>
-                    <p>
-                        - Producto 1 <br>
-                        - Producto 2 <br>
-                        - Producto 3
-
-
-
-                        
-                    </p>
+    </div>
+    <div *ngIf="step==1">
+        <div class="row mt-2">
+            <div class="col">
+                <span class="display-6">Datos del cliente</span>
+                <div class="mt-2 card">
+                    <div class="card-body">
+                        <h6>El cliente ya se encuentra registrado?</h6>
+                        <p-selectButton [options]="stateOptions" [(ngModel)]="isUserRegistered" optionLabel="label" optionValue="value"></p-selectButton>
+                        <div *ngIf="isUserRegistered==0" class="mt-2">
+                            <h6>Datos del cliente:</h6>
+                            <div class="mt-4 row justify-content-start">
+                                <div class="col-3">
+                                    <span class="p-float-label">
+                                        <input pInputText [(ngModel)]="client.name" />
+                                        <label>Nombre</label>
+                                    </span>
+                                </div>
+                                <div class="col-3">
+                                    <span class="p-float-label col">
+                                        <input pInputText [(ngModel)]="client.lastName" />
+                                        <label>Apellido</label>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <button class="col btn btn-primary">Confirmar</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="isUserRegistered==1">
+                        <span class="mt-2 ms-3 mb-2 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input type="text" pInputText [(ngModel)]="userSearchText" placeholder="Buscar cliente" />
+                        </span>
+                        <p-table *ngIf="userResults.length>0" [value]="products" [tableStyle]="{ 'min-width': '50rem' }">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Apellido</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-product>
+                                <tr>
+                                    <td>{{ 'Samuel' }}</td>
+                                    <td>{{ 'Sánchez' }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        <div class="mt-2 mb-2 ms-3">
+                            <button class="col btn btn-primary">Confirmar</button>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="col-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h6>Lista de pedidos:</h6>
+                        <div *ngFor="let prod of products">
+                            <span *ngIf="prod.quantity>0">
+                                {{ prod.product.name }} - ${{ prod.product.price }}.00 x {{ prod.quantity }} = ${{ prod.product.price * prod.quantity }}.00
+                            </span>
+                        </div>
+                        <hr>
+                        <div style="text-align: right;">
+                            <span style="vertical-align: top; font-size:larger;" class="me-2">
+                                Total:
+                            </span>
+                            <span class="display-6" >
+                                ${{total}}.00
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
