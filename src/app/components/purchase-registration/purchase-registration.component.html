@@ -14,7 +14,7 @@
                             <div class="card product">
                                 <div class="card-body">
                                     <i class="fa fa-shopping-basket me-2" aria-hidden="true"></i>
-                                    {{ product.product.name}} - ${{ product.product.price }}.00
+                                    {{ product.service.name}} - {{ fmtMoney(product.service.price) }}
                                     <div class="mt-2" style="text-align:end;">
                                         <button (click)="clickMinus(product);" class="btn btn-primary me-2"><i class="fa fa-minus" aria-hidden="true"></i>
                                         </button>
@@ -34,7 +34,7 @@
                         <h6>Lista de pedidos:</h6>
                         <div *ngFor="let prod of products">
                             <span *ngIf="prod.quantity>0">
-                                {{ prod.product.name }} - ${{ prod.product.price }}.00 x {{ prod.quantity }} = ${{ prod.product.price * prod.quantity }}.00
+                                {{ prod.service.name }} - ${{ prod.service.price }}.00 x {{ prod.quantity }} = ${{ prod.service.price * prod.quantity }}.00
                             </span>
                         </div>
                         <hr>
@@ -113,7 +113,7 @@
                         <h6>Lista de pedidos:</h6>
                         <div *ngFor="let prod of products">
                             <span *ngIf="prod.quantity>0">
-                                {{ prod.product.name }} - ${{ prod.product.price }}.00 x {{ prod.quantity }} = ${{ prod.product.price * prod.quantity }}.00
+                                {{ prod.service.name }} - ${{ prod.service.price }}.00 x {{ prod.quantity }} = ${{ prod.service.price * prod.quantity }}.00
                             </span>
                         </div>
                         <hr>

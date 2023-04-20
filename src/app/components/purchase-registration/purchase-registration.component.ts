@@ -1,26 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Product } from 'src/app/models/product.model';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { SelectItem } from 'primeng/api';
 import { Client } from 'src/app/models/client.model';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
+import { Service } from 'src/app/models/service.model';
+import { DataService } from 'src/app/services/data.service';
 
 @Component({
   selector: 'app-purchase-registration',
   templateUrl: './purchase-registration.component.html',
   styleUrls: ['./purchase-registration.component.css']
 })
-export class PurchaseRegistrationComponent {
+export class PurchaseRegistrationComponent implements OnInit {
 
-  step: number = 1;
+  step: number = 0;
 
-  products: OrderProduct[] = [
-    new OrderProduct('Planchado', 10),
-    new OrderProduct('Tintorería', 5),
-    new OrderProduct('Zapatería', 3),
-    new OrderProduct('Costura', 4),
-    new OrderProduct('Lavandería', 2)
+  products: OrderService[] = [
+    
   ];
 
   stateOptions: SelectItem[] = [
@@ -39,34 +37,49 @@ export class PurchaseRegistrationComponent {
 
   clientSelectModalView: boolean = false;
 
-  computeTotal() {
-    this.total = 0;
-    this.products.forEach(product => {
-      this.total += product.product.price * product.quantity;
+  constructor(private data: DataService) { }
+
+  ngOnInit() {
+    this.data.getServices().subscribe((data: Service[]) => {
+      data.forEach(service => {
+        this.products.push(new OrderService(service.name, service.price));
+      });
     });
   }
 
-  clickPlus(product: OrderProduct) {
+  computeTotal() {
+    this.total = 0;
+    this.products.forEach(product => {
+      this.total += product.service.price * product.quantity;
+    });
+  }
+
+  clickPlus(product: OrderService) {
     product.quantity++;
     this.computeTotal();
   }
 
-  clickMinus(product: OrderProduct) {
+  clickMinus(product: OrderService) {
     if (product.quantity > 0) {
       product.quantity--;
       this.computeTotal();
     }
   }
 
+  fmtMoney(value: number) {
+    return "$" + value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+  }
+
 }
 
-class OrderProduct {
-  product!: Product;
+class OrderService {
+  service!: Service;
   quantity!: number;
   constructor(name: string, price: number) {
-    this.product = new Product();
+    this.service = new Service();
     this.quantity = 0;
-    this.product.name = name;
-    this.product.price = price;
+    this.service.name = name;
+    this.service.price = price;
   }
+
 }

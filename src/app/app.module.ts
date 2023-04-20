@@ -9,6 +9,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { TableModule } from 'primeng/table';
     InputTextModule,
     TableModule,
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule
   ],
   providers: [],
